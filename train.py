@@ -102,7 +102,7 @@ def mse_loss(model, lamda1, lamda2, lamda3, n_0, n_b, n_p):
 
     # the initial condition loss
     # Initial conditions t=0 for all x
-    xic_1, tic_1 = cf.data_sampler(n_0, [-1, 1], [0, 0.000001]) # sample between -1 < x < 1 and t = 0
+    xic_1, tic_1 = cf.data_sampler(n_0, [-1, 1], [0, 0.0000001])  # sample between -1 < x < 1 and t = 0
     x_ic = torch.tensor(xic_1, dtype=torch.float32, requires_grad=True).unsqueeze(1)
     t_ic = torch.tensor(tic_1, dtype=torch.float32, requires_grad=True).unsqueeze(1)
 
@@ -113,7 +113,7 @@ def mse_loss(model, lamda1, lamda2, lamda3, n_0, n_b, n_p):
 
     # the first boundary condition loss
     # Boundary for x = -1 for all t
-    xbc_1, tbc_1 = cf.data_sampler(n_b, [-1.00001, -0.99999], [0, 4]) # sample x = 0 and 0 < t < 4
+    xbc_1, tbc_1 = cf.data_sampler(n_b, [-1.00000, -0.999999], [0, 4]) # sample x = 0 and 0 < t < 4
     x_boundary = torch.tensor(xbc_1, dtype=torch.float32, requires_grad=True).unsqueeze(1)
     t_boundary = torch.tensor(tbc_1, dtype=torch.float32, requires_grad=True).unsqueeze(1)
 
@@ -123,7 +123,7 @@ def mse_loss(model, lamda1, lamda2, lamda3, n_0, n_b, n_p):
 
     # the second boundary condition loss
     # Boundary for x = 1 for all t
-    xbc_2, tbc_2 = cf.data_sampler(n_b, [0.99999, 1.00001], [0, 4]) # sample x = 1 and 0 < t < 4
+    xbc_2, tbc_2 = cf.data_sampler(n_b, [0.999999, 1.00000], [0, 4]) # sample x = 1 and 0 < t < 4
     x_boundary2 = torch.tensor(xbc_2, dtype=torch.float32, requires_grad=True).unsqueeze(1)
     t_boundary2 = torch.tensor(tbc_2, dtype=torch.float32, requires_grad=True).unsqueeze(1)
 
@@ -174,7 +174,7 @@ def train_model(model, optimizer, inputs, x, t):
         model_loss = torch.mean((um - u_tensor)**2) + torch.mean((vm - v_tensor)**2)
 
         # Calculate the physics-based loss
-        eq_loss = mse_loss(model, 0.01, 0.01, 0.001, 50, 50, 500)
+        eq_loss = mse_loss(model, 0.01, 0.01, 0.001, 100, 100, 500)
         # lamda1*ic_loss + lamda2*total_boundary_loss + lamda3*physics_loss  ,N_0, N_b, N_f
 
         loss = model_loss + eq_loss
@@ -214,7 +214,7 @@ def train_model(model, optimizer, inputs, x, t):
     plt.title('Training Loss Curve')
     plt.legend()
     plt.grid(True)
-    plt.savefig('loss_curve.png')  # Save the loss curve plot
+    plt.savefig('images/loss_curve.png')  # Save the loss curve plot
     plt.show()
 
     return iters, losses

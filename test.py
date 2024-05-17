@@ -27,5 +27,5 @@ def show_slices(model, x_bound: [float | int], t_slices: [float | int], n_points
         slice(T, x_bound, v_pred, v_solution, 'V(x,t)', axes[index, 1])
 
     plt.tight_layout(pad=0.5)
-    plt.savefig(f'solution for t ={t_slices}.png')  # Save the plot
+    plt.savefig('images/solution for t = %s.png' % str(t_slices))  # Save the plot
     plt.show()
