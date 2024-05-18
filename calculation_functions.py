@@ -38,3 +38,35 @@ def numerical_solution(x, t):
     V = np.sin(np.pi * t / 4) * np.sin(np.pi * (x + 1) / 2)
     return U, V
 
+
+def prep_anim(model, x, t):
+
+    model.eval()
+    x_mesh, t_mesh = np.meshgrid(x, t)
+
+    real_u, real_v = numerical_solution(x_mesh, t_mesh)
+    real_h = np.sqrt(real_u**2 + real_v**2)
+
+    x_mesh = x_mesh.flatten()
+    t_mesh = t_mesh.flatten()
+
+    x_tensor = torch.tensor(x_mesh, dtype=torch.float32, requires_grad=True).unsqueeze(1)
+    t_tensor = torch.tensor(t_mesh, dtype=torch.float32, requires_grad=True).unsqueeze(1)
+
+    inputs = torch.cat([x_tensor, t_tensor], dim=1)
+
+    pred = model.forward(inputs)
+    u_pred = pred[:, 0:1]
+    v_pred = pred[:, 1:2]
+
+    u_pred = u_pred.detach().numpy()
+    v_pred = v_pred.detach().numpy()
+
+    u_pred = np.reshape(u_pred, (len(x), len(x)))
+    v_pred = np.reshape(v_pred, (len(x), len(x)))
+
+    h_pred = np.sqrt(u_pred**2 + v_pred**2)
+
+    model.train()
+
+    return u_pred, real_u, v_pred, real_v, h_pred, real_h

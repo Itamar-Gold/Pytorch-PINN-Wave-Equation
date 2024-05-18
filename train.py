@@ -3,6 +3,7 @@ import torch.nn as nn
 import time
 import torch
 import calculation_functions as cf
+from plot_functions import animate_3d_result as animate
 
 
 class PINN(nn.Module):
@@ -150,7 +151,7 @@ def mse_loss(model, lamda1, lamda2, lamda3, n_0, n_b, n_p):
     return loss_
 
 
-def train_model(model, optimizer, inputs, x, t):
+def train_model(model, optimizer, inputs, x, t, animation_prep=False):
 
     start_time = time.time()
 
@@ -163,7 +164,7 @@ def train_model(model, optimizer, inputs, x, t):
     losses  = []
 
     # Training loop
-    for i in range(6000):
+    for i in range(4000):
 
         optimizer.zero_grad()
         # Model prediction
@@ -187,20 +188,13 @@ def train_model(model, optimizer, inputs, x, t):
         if i % 100 == 0:
             iters.append(i)
             losses.append(loss.item())
+        if animation_prep:
+            if i % 40 == 0:
 
-        # Images for GIF
-        # if i % 100 == 0:
-        #   continues_x_t = np.stack((X.ravel(), T.ravel()), axis=-1)
-        #   continues_x_t_tensor = torch.tensor(continues_x_t, dtype=torch.float32).to(device)
-        #   predictions = model(continues_x_t_tensor)
-        #   um, vm = predictions[:, 0], predictions[:, 1]
-        #   uh = um.cpu().detach()
-        #   vh = vm.cpu().detach()
-        #   hh = torch.sqrt(uh**2 + vh**2)
-        #   file = save_result(X, T, hh.reshape(X.shape), H_true=None, epoch=i, save_dir='plots')
-        #   files.append(file)
-
-    # save_gif_PIL("nn.gif", files, fps=20, loop=0)
+                u_pred, real_u, v_pred, real_v, h_pred, real_h = cf.prep_anim(model, x, t)
+                animate(x, t, u_pred, 'u(x,t)', i, real_u)
+                animate(x, t, v_pred, 'v(x,t)', i, real_v)
+                animate(x, t, h_pred, 'h(x,t)', i, real_h)
 
     elapsed = time.time() - start_time
     print('Training time: %.2f' % elapsed)

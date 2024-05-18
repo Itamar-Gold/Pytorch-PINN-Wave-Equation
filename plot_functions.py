@@ -2,29 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_3d_result(x: [float], t: [float], predicted_solution: [float],
-                   solution_title: [str], true_solution=None) -> None:
-    """
-        Plot and visualize the predicted and true solutions of the wave equation.
-
-        Parameters:
-        - X: Spatial domain, a 2D array of shape (M, N) where M is the number of
-        spatial points and N is the number of time steps.
-        - T: Temporal domain, a 2D array of shape (M, N) where M is the number of
-        spatial points and N is the number of time steps.
-        - H_pred: Predicted wave solution, a 2D array of shape (M, N).
-        - H_true: True wave solution (optional), a 2D array of shape (M, N).
-
-        Usage:
-        - X, T, H_pred, H_true are the inputs to the function.
-        - X and T represent the spatial and temporal coordinates of the domain respectively.
-        - H_pred is the predicted wave solution obtained from the model.
-        - H_true (optional) is the true wave solution for comparison.
-
-        Example:
-        # >>> plot_3D_result(X, T, H_pred)
-        # >>> plot_3D_result(X, T, H_pred, H_true)
-        """
+def animate_3d_result(x: [float], t: [float], predicted_solution: [float],
+                      solution_title: [str], iteration: int, true_solution=None) -> None:
 
     x_mesh, t_mesh = np.meshgrid(x, t)
     fig = plt.figure(figsize=(14, 7))
@@ -33,32 +12,42 @@ def plot_3d_result(x: [float], t: [float], predicted_solution: [float],
     if true_solution is not None:
         ax_true = fig.add_subplot(122, projection='3d')
         surf_true = ax_true.plot_surface(x_mesh, t_mesh, true_solution, cmap='plasma', edgecolor='none')
-        ax_true.set_title('True Solution')
+        ax_true.set_title(f'True Solution')
         ax_true.set_xlabel('Spatial domain (x)')
         ax_true.set_ylabel('Temporal domain (t)')
         ax_true.set_zlabel(solution_title)
-        fig.colorbar(surf_true, shrink=0.5, aspect=10, ax=ax_true)
+        ax_true.xaxis.set_major_locator(plt.MaxNLocator(5))  # correct the axis for the plots
+        ax_true.yaxis.set_major_locator(plt.MaxNLocator(5))
+        fig.colorbar(surf_true, shrink=0.5, aspect=10, ax=ax_true, location='left')
+        ax_true.view_init(elev=10, azim=40)  # Adjust the azim parameter here for better view
 
         # Plot predicted wave
         ax_pred = fig.add_subplot(121, projection='3d')
         surf_pred = ax_pred.plot_surface(x_mesh, t_mesh, predicted_solution, cmap='plasma', edgecolor='none')
-        ax_pred.set_title('Predicted')
+        ax_pred.set_title(f'Predicted Solution  iteration = {iteration}')
         ax_pred.set_xlabel('Spatial domain (x)')
         ax_pred.set_ylabel('Temporal domain (t)')
         ax_pred.set_zlabel(solution_title)
-        fig.colorbar(surf_pred, shrink=0.5, aspect=10, ax=ax_pred)
+        ax_pred.xaxis.set_major_locator(plt.MaxNLocator(5))  # correct the axis for the plots
+        ax_pred.yaxis.set_major_locator(plt.MaxNLocator(5))
+        fig.colorbar(surf_pred, shrink=0.5, aspect=10, ax=ax_pred, location='left')
+        ax_pred.view_init(elev=10, azim=40)  # Adjust the azim parameter here for better view
 
     else:
         # Plot predicted wave
         ax_pred = fig.add_subplot(111, projection='3d')
         surf_pred = ax_pred.plot_surface(x_mesh, t_mesh, predicted_solution, cmap='plasma', edgecolor='none')
-        ax_pred.set_title('Predicted')
+        ax_pred.set_title(f'Predicted Solution   iteration = {iteration}')
         ax_pred.set_xlabel('Spatial domain (x)')
         ax_pred.set_ylabel('Temporal domain (t)')
         ax_pred.set_zlabel(solution_title)
-        fig.colorbar(surf_pred, shrink=0.5, aspect=10, ax=ax_pred)
+        ax_pred.xaxis.set_major_locator(plt.MaxNLocator(5))  # correct the axis for the plots
+        ax_pred.yaxis.set_major_locator(plt.MaxNLocator(5))
+        fig.colorbar(surf_pred, shrink=0.5, aspect=10, ax=ax_pred, location='left')
+        ax_pred.view_init(elev=10, azim=40)  # Adjust the azim parameter here for better view
 
-    plt.show()
+    plt.savefig(f'images/{solution_title}/training_{iteration}.png')
+    plt.close()
 
 
 def plot_slice(t_time: list[float | int], x_bound: [float | int, float | int],
