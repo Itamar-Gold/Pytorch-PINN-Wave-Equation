@@ -29,3 +29,40 @@ def show_slices(model, x_bound: [float | int], t_slices: [float | int], n_points
     plt.tight_layout(pad=0.5)
     plt.savefig('images/solution for t = %s.png' % str(t_slices))  # Save the plot
     plt.show()
+
+
+def error_l2norm(model, x, t):
+
+    model.eval()
+
+    u_true_tensor, v_true_tensor = numerical_solution(x, t)
+
+    u_true_tensor = torch.tensor(u_true_tensor, dtype=torch.float32)
+    v_true_tensor = torch.tensor(v_true_tensor, dtype=torch.float32)
+
+    x_tensor = torch.tensor(x, dtype=torch.float32, requires_grad=True).unsqueeze(1)
+    t_tensor = torch.tensor(t, dtype=torch.float32, requires_grad=True).unsqueeze(1)
+    inputs = torch.cat([x_tensor, t_tensor], dim=1)
+
+    pred = model.forward(inputs)
+    u_pred = pred[:, 0:1]
+    v_pred = pred[:, 1:2]
+
+    error_vec_u = u_true_tensor - u_pred.squeeze(-1)
+    error_vec_v = v_true_tensor - v_pred.squeeze(-1)
+
+    # Compute the L2 norms of the error vectors
+    error_norm_u = torch.norm(error_vec_u, p=2)
+    true_norm_u = torch.norm(u_true_tensor, p=2)
+
+    error_norm_v = torch.norm(error_vec_v, p=2)
+    true_norm_v = torch.norm(v_true_tensor, p=2)
+
+    # Calculate the relative L2 norms of the errors and convert to percentage
+    relative_error_norm_u = 100 * (error_norm_u / true_norm_u)
+    relative_error_norm_v = 100 * (error_norm_v / true_norm_v)
+
+    formatted_error_u = f"{relative_error_norm_u:.3f}%"
+    formatted_error_v = f"{relative_error_norm_v:.3f}%"
+
+    return formatted_error_u, formatted_error_v
