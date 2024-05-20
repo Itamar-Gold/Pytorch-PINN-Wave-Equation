@@ -89,4 +89,8 @@ prepare_animation = False
 
 ![solution for t =  1 5, 3 5](https://github.com/Itamar-Gold/Pytorch-PINN-Wave-Equation/assets/92544992/ed09ff25-c69f-4c50-b84f-7e19c1e1d095)
 
+**The evaluated error of the model using L2 Norm**
 
+Calculated with 2,500 randomley chosen points the error of the model is:
+
+$E_{u(x,t)} = 2.86$% , $E_{v(x,t)} = 1.67$%
