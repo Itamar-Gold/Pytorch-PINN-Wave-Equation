@@ -1,9 +1,11 @@
+import os
 import matplotlib.pyplot as plt
 import numpy as np
+from typing import List, Union
 
 
-def animate_3d_result(x: [float], t: [float], predicted_solution: [float],
-                      solution_title: [str], iteration: int, true_solution=None) -> None:
+def animate_3d_result(x: List[float], t: List[float], predicted_solution: List[float],
+                      solution_title: str, iteration: int, true_solution=None) -> None:
 
     x_mesh, t_mesh = np.meshgrid(x, t)
     fig = plt.figure(figsize=(14, 7))
@@ -12,7 +14,7 @@ def animate_3d_result(x: [float], t: [float], predicted_solution: [float],
     if true_solution is not None:
         ax_true = fig.add_subplot(122, projection='3d')
         surf_true = ax_true.plot_surface(x_mesh, t_mesh, true_solution, cmap='plasma', edgecolor='none')
-        ax_true.set_title(f'True Solution')
+        ax_true.set_title('True Solution')
         ax_true.set_xlabel('Spatial domain (x)')
         ax_true.set_ylabel('Temporal domain (t)')
         ax_true.set_zlabel(solution_title)
@@ -46,12 +48,14 @@ def animate_3d_result(x: [float], t: [float], predicted_solution: [float],
         fig.colorbar(surf_pred, shrink=0.5, aspect=10, ax=ax_pred, location='left')
         ax_pred.view_init(elev=10, azim=40)  # Adjust the azim parameter here for better view
 
+    # Ensure output directory exists to avoid file save errors
+    os.makedirs(f'images/{solution_title}', exist_ok=True)
     plt.savefig(f'images/{solution_title}/training_{iteration}.png')
     plt.close()
 
 
-def plot_slice(t_time: list[float | int], x_bound: [float | int, float | int],
-               prediction: list[float], solution: list[float], variable_name: str, ax) -> None:
+def plot_slice(t_time: List[Union[float, int]], x_bound: List[Union[float, int]],
+               prediction: List[float], solution: List[float], variable_name: str, ax) -> None:
     """
     plot and visualize a slice of the solution for a specific time
     :param t_time: a list of the same time (like: [1, 1 ... 1, 1])
@@ -71,7 +75,7 @@ def plot_slice(t_time: list[float | int], x_bound: [float | int, float | int],
     plot_slice(t2, x_bound, prediction2, solution2, variable_name2, axes[1])
 
     plt.tight_layout()
-    plt.show()
+    # plt.show() # called at the end of process
     """
 
     x_domain = np.linspace(x_bound[0], x_bound[1], 100)
