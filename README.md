@@ -12,7 +12,6 @@ This project implements advanced PINN methodologies including dynamic Latin Hype
 ## 📑 Table of Contents
 * [About the Physics](#-about-the-physics)
 * [Mathematical Formulation](#-mathematical-formulation)
-* [Project Architecture](#-project-architecture)
 * [Installation & Setup](#-installation--setup)
 * [Usage Guide](#-usage-guide)
 * [Results & Visualizations](#-results--visualizations)
@@ -50,19 +49,6 @@ $$v(x, t) = \sin\left(\frac{\pi t}{4}\right) \sin\left(\frac{\pi (x + 1)}{2}\rig
 $$h(x, t) = u(x, t) + iv(x, t)$$
 
 The network outputs predictions for $u(x, t)$ and $v(x, t)$ simultaneously via a multi-head architecture, which are then combined to form $|h(x, t)|$.
-
----
-
-## 🏗️ Project Architecture
-
-```mermaid
-graph TD;
-    main.py-->train.py & eval_model.py & calculation_functions.py;
-    train.py-->calculation_functions.py & plot_functions.py;
-    eval_model.py-->calculation_functions.py & plot_functions.py;
-    compare_hyperparams.py-->train.py & eval_model.py;
-    create_animation.py-->images_dir[(/images)];
-```
 
 ---
 
