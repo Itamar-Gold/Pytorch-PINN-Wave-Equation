@@ -1,4 +1,4 @@
-# PyTorch Physics-Informed Neural Network (PINN) for Wave Equation
+# Physics-Informed Neural Network (PINN) for Wave Equation
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=flat&logo=PyTorch&logoColor=white)
