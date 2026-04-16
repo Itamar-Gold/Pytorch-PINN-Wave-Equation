@@ -57,7 +57,7 @@ The network outputs predictions for $u(x, t)$ and $v(x, t)$ simultaneously via a
 1. **Clone the repository**
    ```bash
    git clone https://github.com/YourUsername/Pytorch-PINN-Wave-Equation.git
-   cd Pytorch-PINN-Wave-Equation
+   cd PINN-Wave-Equation
    ```
 
 2. **Install dependencies**
@@ -103,7 +103,7 @@ python create_animation.py --all
 ### Advanced Hyperparameter Configuration
 You can fine-tune the architecture, learning rate, learning rate decay, loss penalty weights, and batch sizes directly from the CLI:
 ```bash
-python main.py --train --epochs 6000 --lr 0.005 --hidden 64 --layers 6 --n_phys 1000 --resample_freq 50
+python main.py --train --epochs 2000 --lr 0.005 --hidden 64 --layers 6 --n_phys 1000 --resample_freq 50
 ```
 Run `python main.py --help` for a full list of available parameters.
 
@@ -111,23 +111,21 @@ Run `python main.py --help` for a full list of available parameters.
 
 ## 📊 Results & Visualizations
 
-After 4,000 epochs of training on an Nvidia GPU using dynamic LHS batched sampling and a decaying Adam optimizer, the PINN captures the wave propagation flawlessly.
+After training 2000 epochs on an NVIDIA GeForce RTX 4070 using dynamic LHS batched sampling and a decaying Adam optimizer, the PINN captures the wave propagation flawlessly.
 
 ### 3D Surface Predictions
 **Real component $u(x,t)$:**
-![u(x,t)](https://github.com/Itamar-Gold/Pytorch-PINN-Wave-Equation/assets/92544992/840f770c-0b69-4410-a433-f6678bc32410)
+<img width="1400" height="700" alt="u_x_t_animation" src="https://github.com/user-attachments/assets/35040b48-1a82-44a8-ab22-cf7f356edfd1" />
 
 **Imaginary component $v(x,t)$:**
-![v(x,t)](https://github.com/Itamar-Gold/Pytorch-PINN-Wave-Equation/assets/92544992/6bc6f056-737e-49b2-a69f-80709d2b8f10)
+<img width="1400" height="700" alt="v_x_t_animation" src="https://github.com/user-attachments/assets/115cb513-0de2-4e45-84fa-1625dad9f588" />
 
 **Magnitude of complex wavefield $|h(x,t)|$:**
-![h(x,t)](https://github.com/Itamar-Gold/Pytorch-PINN-Wave-Equation/assets/92544992/e037b8d9-5e6b-4293-81f6-092eaaa07b39)
+<img width="1400" height="700" alt="h_x_t_animation" src="https://github.com/user-attachments/assets/af312337-4f90-49b0-8992-758ba1ea2e60" />
 
 ### 2D Temporal Slices
 Slicing the spatio-temporal domain to visualize the wave at specific time steps:
-
-![solution for t =  0 5, 2 3](https://github.com/Itamar-Gold/Pytorch-PINN-Wave-Equation/assets/92544992/34713540-f20b-4750-a3b7-cc6e0017f29c)
-![solution for t =  1 5, 3 5](https://github.com/Itamar-Gold/Pytorch-PINN-Wave-Equation/assets/92544992/ed09ff25-c69f-4c50-b84f-7e19c1e1d095)
+<img width="1000" height="400" alt="solution_for_t_ 0p5_2p3" src="https://github.com/user-attachments/assets/b1c1d7b0-d3b6-49eb-9c2e-a19a7e9819a5" />
 
 ### Network Accuracy
 Calculated relative to the exact analytical solution across 2,500 randomly distributed test points:
