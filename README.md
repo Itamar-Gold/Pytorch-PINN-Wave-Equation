@@ -56,7 +56,7 @@ The network outputs predictions for $u(x, t)$ and $v(x, t)$ simultaneously via a
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/YourUsername/Pytorch-PINN-Wave-Equation.git
+   git clone https://github.com/YourUsername/PINN-Wave-Equation.git
    cd PINN-Wave-Equation
    ```
 
